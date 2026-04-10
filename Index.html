@@ -13,8 +13,8 @@
 
     <div class="header-music-player">
       <div class="music play" id="musicControls">
-        <img src="https://static.wikitide.net/gracewiki/8/8b/GooberIdle_Soulset.png"
-          alt="the goober who dances" class="music-goob" id="randomizeMusicBtn">
+        <img src="https://static.wikitide.net/gracewiki/8/8b/GooberIdle_Soulset.png" alt="the goober who dances"
+          class="music-goob" id="randomizeMusicBtn">
       </div>
     </div>
 
@@ -62,43 +62,43 @@
 
     <script>
       // ── DOM refs ──────────────────────────────────────────────────────────────
-      const music          = document.getElementById('music');
-      const gooberImg      = document.getElementById('gooberImg');
-      const pointsEl       = document.getElementById('points');
-      const scaleLevelEl   = document.getElementById('scaleLevel');
-      const scaleCostEl    = document.getElementById('scaleCost');
+      const music = document.getElementById('music');
+      const gooberImg = document.getElementById('gooberImg');
+      const pointsEl = document.getElementById('points');
+      const scaleLevelEl = document.getElementById('scaleLevel');
+      const scaleCostEl = document.getElementById('scaleCost');
       const goobersLevelEl = document.getElementById('goobersLevel');
-      const goobersCostEl  = document.getElementById('goobersCost');
-      const coolLevelEl    = document.getElementById('coolLevel');
-      const coolCostEl     = document.getElementById('coolCost');
+      const goobersCostEl = document.getElementById('goobersCost');
+      const coolLevelEl = document.getElementById('coolLevel');
+      const coolCostEl = document.getElementById('coolCost');
       const rebirthValueEl = document.getElementById('rebirthValue');
-      const rebirthsEl     = document.getElementById('rebirths');
-      const rebirthCostEl  = document.getElementById('rebirthCost');
+      const rebirthsEl = document.getElementById('rebirths');
+      const rebirthCostEl = document.getElementById('rebirthCost');
       const skinsContainer = document.getElementById('skinsContainer');
-      const skinProgress   = document.getElementById('skinProgress');
+      const skinProgress = document.getElementById('skinProgress');
 
       // ── Constants ─────────────────────────────────────────────────────────────
       const SKIN_CLICK_INTERVAL = 85;
 
       const skins = [
-        { id: 'default',  name: 'Default',  img: 'Assets/Images/goob-default.png' },
-        { id: 'square',   name: 'Square',   img: 'Assets/Images/goob-square.png' },
-        { id: 'circle',   name: 'Circle',   img: 'Assets/Images/goob-circle.png' },
+        { id: 'default', name: 'Default', img: 'Assets/Images/goob-default.png' },
+        { id: 'square', name: 'Square', img: 'Assets/Images/goob-square.png' },
+        { id: 'circle', name: 'Circle', img: 'Assets/Images/goob-circle.png' },
         { id: 'reprieve', name: 'Reprieve', img: 'Assets/Images/goob-squareREPRIEVE.png' },
-        { id: 'hd',       name: 'HD',       img: 'Assets/Images/goob-squareHD.png' },
-        { id: 'zen',      name: 'Zen',      img: 'Assets/Images/goob-circleZEN.png' },
-        { id: 'alian',    name: 'Alian',    img: 'Assets/Images/goob-alian.png' },
-        { id: 'gentle',   name: 'Gentle',   img: 'Assets/Images/goob-gentle.png' },
-        { id: 'snap',     name: 'Snap',     img: 'Assets/Images/goob-snap.png' },
-        { id: 'doom',     name: 'Doom',     img: 'Assets/Images/goob-doom.png' },
-        { id: 'doodle',   name: 'Doodle',   img: 'Assets/Images/goob-doodle.png' },
+        { id: 'hd', name: 'HD', img: 'Assets/Images/goob-squareHD.png' },
+        { id: 'zen', name: 'Zen', img: 'Assets/Images/goob-circleZEN.png' },
+        { id: 'alian', name: 'Alian', img: 'Assets/Images/goob-alian.png' },
+        { id: 'gentle', name: 'Gentle', img: 'Assets/Images/goob-gentle.png' },
+        { id: 'snap', name: 'Snap', img: 'Assets/Images/goob-snap.png' },
+        { id: 'doom', name: 'Doom', img: 'Assets/Images/goob-doom.png' },
+        { id: 'doodle', name: 'Doodle', img: 'Assets/Images/goob-doodle.png' },
       ];
 
       const availableSongs = [
         'Assets/Music/BEYOND THE SURFACE.mp3',
         'Assets/Music/Ultrasonic Faith (Reprise).mp3',
         'Assets/Music/Claire de lune.mp3',
-        'Assets/Music/Snowy animal crossing.mp3',
+        'Assets/Music/Snowy animal crossing.mp3'
       ];
 
       const danceGifs = [
@@ -110,43 +110,44 @@
 
       // ── State ─────────────────────────────────────────────────────────────────
       const state = {
-        points:        0,
-        rebirths:      0,
-        musicStarted:  false,
-        totalClicks:   parseInt(localStorage.getItem('totalClicks') || '0', 10),
-        equippedSkin:  localStorage.getItem('equippedSkin') || 'default',
+        points: 0,
+        rebirths: 0,
+        musicStarted: false,
+        lastmusicindex: -1,
+        totalClicks: parseInt(localStorage.getItem('totalClicks') || '0', 10),
+        equippedSkin: localStorage.getItem('equippedSkin') || 'default',
         unlockedSkins: new Set(JSON.parse(localStorage.getItem('unlockedSkins') || '["default"]')),
-        autoInterval:  null,
-        coolInterval:  null,
+        autoInterval: null,
+        coolInterval: null,
       };
 
       // ── Upgrades ──────────────────────────────────────────────────────────────
       const upgrades = {
-        rebirth:       { level: 0, cost: 10000, value: 1, increment: 0.25 },
-        gooberscaling: { level: 1, cost: 1,     increment: 1 },
-        Goobers:       { level: 0, cost: 60,    increment: 1, interval: 1000 },
-        coolGoobers:   { level: 0, cost: 100,   increment: 6, interval: 1000 },
+        rebirth: { level: 0, cost: 10000, value: 1, increment: 0.25 },
+        gooberscaling: { level: 1, cost: 1, increment: 1 },
+        Goobers: { level: 0, cost: 60, increment: 1, interval: 1000 },
+        coolGoobers: { level: 0, cost: 100, increment: 6, interval: 1000 },
       };
 
       // ── Persistence ───────────────────────────────────────────────────────────
       function saveState() {
-        localStorage.setItem('totalClicks',   String(state.totalClicks));
+        localStorage.setItem('totalClicks', String(state.totalClicks));
         localStorage.setItem('unlockedSkins', JSON.stringify(Array.from(state.unlockedSkins)));
-        localStorage.setItem('equippedSkin',  state.equippedSkin);
+        localStorage.setItem('equippedSkin', state.equippedSkin);
       }
 
       // ── Display ───────────────────────────────────────────────────────────────
       function updateDisplay() {
-        pointsEl.textContent       = state.points.toFixed(0);
-        scaleLevelEl.textContent   = upgrades.gooberscaling.level;
-        scaleCostEl.textContent    = upgrades.gooberscaling.cost;
+        pointsEl.textContent = state.points.toFixed(0);
+        scaleLevelEl.textContent = upgrades.gooberscaling.level;
+        scaleCostEl.textContent = upgrades.gooberscaling.cost;
         goobersLevelEl.textContent = upgrades.Goobers.level;
-        goobersCostEl.textContent  = upgrades.Goobers.cost;
-        coolLevelEl.textContent    = upgrades.coolGoobers.level;
-        coolCostEl.textContent     = upgrades.coolGoobers.cost;
+        goobersCostEl.textContent = upgrades.Goobers.cost;
+        coolLevelEl.textContent = upgrades.coolGoobers.level;
+        coolCostEl.textContent = upgrades.coolGoobers.cost;
         rebirthValueEl.textContent = upgrades.rebirth.value.toFixed(2);
-        rebirthsEl.textContent     = state.rebirths;
-        rebirthCostEl.textContent  = upgrades.rebirth.cost;
+        rebirthsEl.textContent = state.rebirths;
+        rebirthCostEl.textContent = upgrades.rebirth.cost;
         renderSkins();
       }
 
@@ -158,15 +159,22 @@
       function startMusic() {
         if (state.musicStarted) return;
         state.musicStarted = true;
-        music.play().catch(() => {});
+        music.play().catch(() => { });
       }
-
       function randomizeMusic() {
-        const choice = availableSongs[Math.floor(Math.random() * availableSongs.length)];
+        if (availableSongs.length === 0) return;
+        let newIndex = Math.floor(Math.random() * availableSongs.length);
+        if (availableSongs.length > 1) {
+          while (newIndex === state.lastmusicindex) {
+            newIndex = Math.floor(Math.random() * availableSongs.length);
+          }
+        }
+        state.lastmusicindex = newIndex;
+        const choice = availableSongs[newIndex];
         music.src = choice;
         music.currentTime = 0;
         music.loop = true;
-        music.play().catch(() => {});
+        music.play().catch(() => { });
         state.musicStarted = true;
       }
 
@@ -189,8 +197,8 @@
       // ── Click ─────────────────────────────────────────────────────────────────
       function clickGoober() {
         state.points += upgrades.gooberscaling.level * upgrades.gooberscaling.increment * multiplier();
-        startMusic();
         state.totalClicks += 1;
+        startMusic();
         unlockSkins();
         updateDisplay();
       }
@@ -200,7 +208,7 @@
         if (state.points < upgrades.gooberscaling.cost) return;
         state.points -= upgrades.gooberscaling.cost;
         upgrades.gooberscaling.level += 1;
-        upgrades.gooberscaling.cost  += 50;
+        upgrades.gooberscaling.cost += 50;
         updateDisplay();
       }
 
@@ -208,7 +216,7 @@
         if (state.points < upgrades.Goobers.cost) return;
         state.points -= upgrades.Goobers.cost;
         upgrades.Goobers.level += 1;
-        upgrades.Goobers.cost  += 5;
+        upgrades.Goobers.cost += 5;
         restartAuto();
         updateDisplay();
       }
@@ -217,25 +225,25 @@
         if (state.points < upgrades.coolGoobers.cost) return;
         state.points -= upgrades.coolGoobers.cost;
         upgrades.coolGoobers.level += 1;
-        upgrades.coolGoobers.cost  += 10;
+        upgrades.coolGoobers.cost += 10;
         restartAuto();
         updateDisplay();
       }
 
       function rebirth() {
         if (state.points < upgrades.rebirth.cost) return;
-        state.points  = 0;
+        state.points = 0;
         state.rebirths += 1;
 
         upgrades.rebirth = {
-          level:     upgrades.rebirth.level + 1,
-          cost:      upgrades.rebirth.cost * 2,
-          value:     upgrades.rebirth.value + upgrades.rebirth.increment,
+          level: upgrades.rebirth.level + 1,
+          cost: upgrades.rebirth.cost * 2,
+          value: upgrades.rebirth.value + upgrades.rebirth.increment,
           increment: upgrades.rebirth.increment,
         };
-        upgrades.gooberscaling = { level: 1, cost: 1,   increment: 1 };
-        upgrades.Goobers       = { level: 0, cost: 60,  increment: 1, interval: 750 };
-        upgrades.coolGoobers   = { level: 0, cost: 100, increment: 6, interval: 750 };
+        upgrades.gooberscaling = { level: 1, cost: 1, increment: 1 };
+        upgrades.Goobers = { level: 0, cost: 60, increment: 1, interval: 750 };
+        upgrades.coolGoobers = { level: 0, cost: 100, increment: 6, interval: 750 };
 
         clearInterval(state.autoInterval);
         clearInterval(state.coolInterval);
@@ -271,22 +279,22 @@
         skins.forEach(skin => {
           const unlocked = state.unlockedSkins.has(skin.id);
 
-          const card  = document.createElement('div');
+          const card = document.createElement('div');
           card.className = 'skin-card';
 
           const thumb = document.createElement('img');
-          thumb.src       = skin.img;
-          thumb.alt       = skin.name;
+          thumb.src = skin.img;
+          thumb.alt = skin.name;
           thumb.className = 'skin-thumb';
 
           const title = document.createElement('div');
-          title.className   = 'skin-title';
+          title.className = 'skin-title';
           title.textContent = skin.name;
 
           const btn = document.createElement('button');
-          btn.className   = 'skin-btn';
+          btn.className = 'skin-btn';
           btn.textContent = unlocked ? (state.equippedSkin === skin.id ? 'Equipped' : 'Equip') : 'Locked';
-          btn.disabled    = !unlocked || state.equippedSkin === skin.id;
+          btn.disabled = !unlocked || state.equippedSkin === skin.id;
           btn.addEventListener('click', () => { if (unlocked) setGooberSkin(skin); });
 
           card.append(thumb, title, btn);
