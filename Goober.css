@@ -1,12 +1,19 @@
+/* @font-face {
+    font-family: ;
+    src: url();
+} */
+
+@import url('https://fonts.googleapis.com/css2?family=Comic+Relief:wght@700&display=swap');
+
 body {
     padding: 0;
     margin: 0;
-    font-family: 'Comic Sans MS', cursive, sans-serif;
+    font-family: 'Comic Relief', 'Comic Sans MS', cursive, sans-serif;
     color: white;
     background-color: black;
     text-align: center;
     max-height: 601px;
-    font-weight: bold;
+    font-weight: 1000;
 }
 
 body::before {
@@ -15,12 +22,16 @@ body::before {
     inset: 0;
     background: url("Assets/Images/GOOBS.jpg");
     background-repeat: repeat;
-    opacity: 0.5;
+    opacity: 0.3;
     z-index: -1;
 }
 
 * {
     box-sizing: border-box;
+}
+
+p {
+    font-size: smaller;
 }
 
 .flex-goober {
@@ -47,8 +58,24 @@ body::before {
     align-items: center;
 }
 
-.goob-upgrades button {
+button {
+    cursor: pointer;
     width: 100%;
+    border: 2px solid white;
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: transform 0.1s;
+}
+
+button:hover:not(.toggleSkinsBtn) {
+    transform: scaleX(0.9) scaleY(1.2);
+}
+
+button:active:not(.toggleSkinsBtn) {
+    transform: scaleX(1.1) scaleY(0.9);
 }
 
 button {
@@ -91,8 +118,7 @@ button {
 
 .him {
     width: 150px;
-    transition: transform 0.1s;
-    border-radius: 50px;
+    transition: transform 0.085s;
     background: transparent;
 }
 
@@ -102,6 +128,7 @@ button {
 
 .him:active {
     transform: scaleX(1.5) scaleY(0.9);
+    cursor: grabbing;
 }
 
 .flex-goober {
@@ -113,17 +140,6 @@ button {
     height: 100vh;
 }
 
-.Buttons-goober {
-    cursor: pointer;
-    width: 300px;
-    border: 0;
-    background-color: white;
-    color: black;
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: bold;
-}
-
 .header-music-player {
     margin-right: 15px;
     margin-bottom: 0px;
@@ -133,6 +149,7 @@ button {
     background-color: black;
     border: 2px solid white;
     border-radius: 6px;
+    z-index: 20;
 }
 
 .music-goob {
@@ -141,26 +158,65 @@ button {
     cursor: pointer;
 }
 
-.goober-skin {
-    margin: 10px;
-    padding: 2px;
+.music-text {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 8px;
+    color: white;
+    padding: 5px;
     background-color: black;
-    border: 1px solid white;
+    border: 2px solid white;
     border-radius: 6px;
-    width: 95%;
-    max-width: 95%;
-    margin-left: auto;
-    margin-right: auto;
-    overflow: hidden;
+}
+
+.goob-hat {
+    position: absolute;
+    left: 235px;
+    top: 340px;
+    transform: translate(-50%, -50%);
+    width: 150px;
+    height: auto;
+    pointer-events: none;
+}
+
+.goober-skin {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(100%);
+    /* hidden by default */
+
+    width: 90%;
+    max-width: 800px;
+
+    background: black;
+    border: 2px solid white;
+    border-radius: 10px 10px 0 0;
+
+    transition: transform 0.3s ease;
+    z-index: 10;
+}
+
+.goober-skin.open {
+    transform: translateX(-50%) translateY(0);
+    /* visible */
+}
+
+.goober-skin {
+    transition: all 0.3s ease;
 }
 
 .skins-container {
     display: flex;
     gap: 12px;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    overflow-x: scroll;
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex-wrap: nowrap;
+    padding: 10px;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
 }
 
 .skin-card {
@@ -170,6 +226,7 @@ button {
     gap: 4px;
     padding: 6px;
     min-width: 100px;
+    scroll-snap-align: center;
 }
 
 .skin-thumb {
@@ -190,4 +247,13 @@ button {
     border: 1px solid white;
     padding: 6px 8px;
     cursor: pointer;
+}
+
+.message-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 6px;
+    min-width: 120px;
 }
